@@ -3,6 +3,7 @@
         "WINDOWPOS"
     ],
     "files.associations": {
-        "vector": "cpp"
+        "vector": "cpp",
+        "map": "cpp"
     }
 }
