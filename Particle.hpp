@@ -4,6 +4,7 @@
 #include <utility>
 using namespace std;
 
+
 class Particle {
 private:
     double initialVelocity;
@@ -25,4 +26,6 @@ public:
     void setAngle(double angle);
     void setInitialPositionY(double initialPositionY);
     void setTrajectory(map<double, pair<double, double>> trajectory);
+
+    void calculateTrajectory(int numThreads);
 };

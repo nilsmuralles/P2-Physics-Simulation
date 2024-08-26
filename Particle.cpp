@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <omp.h>
 #include "Particle.hpp"
 
 Particle::Particle(double initialVelocity, double angle, double initialPositionY){
@@ -48,4 +49,35 @@ void Particle::setInitialPositionY(double initialPositionY){
 
 void Particle::setTrajectory(map<double, pair<double, double>> trajectory){
     this->trajectory = trajectory;
+}
+
+#include <vector>
+void Particle::calculateTrajectory(int numThreads) {
+    double v0x = initialVelocity * cos(angle);
+    double v0y = initialVelocity * sin(angle);
+
+
+    vector<double> times;
+    vector<pair<double, double>> positions;
+
+    for (const auto& entry : trajectory) {
+        times.push_back(entry.first);
+        positions.push_back({0, 0});
+    }
+
+   
+    #pragma omp parallel for num_threads(numThreads)
+    for (size_t i = 0; i < times.size(); ++i) {
+        double t = times[i];
+        double x = v0x * t;
+        double y = initialPositionY + v0y * t - 0.5 * 9.8 * t * t;
+        positions[i] = make_pair(x, y);
+    }
+
+    
+    size_t index = 0;
+    for (auto& entry : trajectory) {
+        entry.second = positions[index];
+        ++index;
+    }
 }
