@@ -20,12 +20,13 @@ public:
     double getAngle();
     double getInitialPositionY();
     double getTime();
+    double toRads(double angleHex);
     map<double, pair<double, double>> getTrajectory();
+    map<double, pair<double, double>> defaultTrajectory(int frames);
 
     void setInitialVelocity(double initialVelocity);
     void setAngle(double angle);
     void setInitialPositionY(double initialPositionY);
     void setTrajectory(map<double, pair<double, double>> trajectory);
-
     void calculateTrajectory(int numThreads);
 };
