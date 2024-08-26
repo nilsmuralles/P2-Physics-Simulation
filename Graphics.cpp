@@ -22,20 +22,29 @@ int main(int argc, char** argv){
     bool movement = false;
     SDL_Rect particle {x0, y0, 10, 10};   
     
-
     vector<Particle> particles;
     particles.push_back(Particle(30, 40, 0));
     particles.push_back(Particle(30, 25, 0));
-    particles.push_back(Particle(30, 70, 0));
+    particles.push_back(Particle(35, 70, 0));
+    particles.push_back(Particle(30, 50, 0));
+    particles.push_back(Particle(30, 60, 0));
+    particles.push_back(Particle(30, 45, 0));
+    particles.push_back(Particle(30, 55, 0));
+    particles.push_back(Particle(30, 22, 0));
+    particles.push_back(Particle(30, 35, 0));
+    particles.push_back(Particle(30, 80, 0));
+    particles.push_back(Particle(30, 62, 0));
+    particles.push_back(Particle(30, 15, 0));
+
     vector<SDL_Rect> particleRects;
 
     #pragma omp parallel for
     for (int i = 0; i < particles.size(); i++){
        particles[i].setAngle(particles[i].getAngle()*M_PI/180); 
-       particles[i].setTrajectory(particles[i].defaultTrajectory(60));
+       particles[i].setTrajectory(particles[i].defaultTrajectory(120));
        SDL_Rect pr {100, (600 + (int)particles[i].getInitialPositionY()), 10, 10};
        particleRects.push_back(pr);
-       particles[i].calculateTrajectory(6);
+       particles[i].calculateTrajectory(4);
     }
 
     while (running) {   
@@ -61,14 +70,24 @@ int main(int argc, char** argv){
                     auto& p = particles[i];
                     auto& rect = particleRects[i];
                     auto t = particles[i].getTrajectory();
+                    int r = rand() % 2 *255;
+                    int g = rand() % 2 *255;
+                    int b = rand() % 2 *255;
+                    while (r == 0 && g == 0 && b == 0){
+                        r = rand() % 2 *255;
+                        g = rand() % 2 *255;
+                        b = rand() % 2 *255;
+                    }
+                    
+                    vector<int> color = {r, g, b, 225};
 
                     for (const auto& entry : t) {
                         particleRects[i].x = x0 + ((entry.second.first) * 10);
                         particleRects[i].y = y0 -+ ((entry.second.second) * 10);
 
-                        cout << "X: " << particleRects[i].x << " Y: " << particleRects[i].y <<endl;
+                        // cout << "X: " << particleRects[i].x << " Y: " << particleRects[i].y <<endl;
 
-                        SDL_SetRenderDrawColor(renderer, 0, 225, 0, 225);
+                        SDL_SetRenderDrawColor(renderer, r, g, b, 225);
                         SDL_RenderFillRect(renderer, &particleRects[i]);
                         
                         SDL_RenderPresent(renderer);
