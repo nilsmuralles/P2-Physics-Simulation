@@ -3,6 +3,7 @@
 #include <math.h>
 #include <omp.h>
 #include "Particle.hpp"
+#include "Reader.hpp"
 #include "vector"
 using namespace std;
 
@@ -22,20 +23,7 @@ int main(int argc, char** argv){
     bool movement = false;
     SDL_Rect particle {x0, y0, 10, 10};   
     
-    vector<Particle> particles;
-    particles.push_back(Particle(30, 40, 0));
-    particles.push_back(Particle(30, 25, 0));
-    particles.push_back(Particle(35, 70, 0));
-    particles.push_back(Particle(30, 50, 0));
-    particles.push_back(Particle(30, 60, 0));
-    particles.push_back(Particle(30, 45, 0));
-    particles.push_back(Particle(30, 55, 0));
-    particles.push_back(Particle(30, 22, 0));
-    particles.push_back(Particle(30, 35, 0));
-    particles.push_back(Particle(30, 80, 0));
-    particles.push_back(Particle(30, 62, 0));
-    particles.push_back(Particle(30, 15, 0));
-
+    vector<Particle> particles = getData("particulas.csv");
     vector<SDL_Rect> particleRects;
 
     #pragma omp parallel for
